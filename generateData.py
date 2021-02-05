@@ -17,7 +17,7 @@ def generateTrainingData():
 	# sprinkle in some noise
 	waveform += np.random.rand(sample_rate) * 10
 	freqs = librosa.feature.melspectrogram(y=waveform, sr=sample_rate)
-	return freqs,labels
+	return freqs[:,1],labels
 
 def oneHotEncode(n):
 	ans = np.zeros(128)
