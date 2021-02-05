@@ -3,7 +3,7 @@ from keras.layers.core import Dense, Dropout, Activation
 from keras.optimizers import SGD
 import numpy as np 
 
-X = np.loadtxt("traingData.txt")
+X = np.loadtxt("trainingData.txt")
 y = np.loadtxt("labels.txt")
 
 model = Sequential()
@@ -16,5 +16,7 @@ model.add(Activation('sigmoid'))
 sgd = SGD(lr=0.1)
 model.compile(loss='binary_crossentropy', optimizer=sgd)
 
-model.fit(X, y, show_accuracy=True, batch_size=1, nb_epoch=1000)
-print(model.predict_proba(X))
+model.fit(X, y, batch_size=1, epochs=1000)
+model.save("firstmodel")
+pred = model.predict(X)
+np.savetxt("prediction.txt",pred,fmt="%1.2f")
