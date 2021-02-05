@@ -35,6 +35,6 @@ if __name__ == "__main__":
 	for x in range(10):
 		data,l=generateTrainingData()
 		trainingData = np.concatenate((trainingData, [data]))
-		labels = np.concatenate((labels, [l]))
+		labels = np.concatenate((labels, l))
 	np.savetxt("trainingData.txt",trainingData,fmt='%.5e')
 	np.savetxt("labels.txt",labels,fmt='%.1e')
