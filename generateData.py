@@ -27,14 +27,15 @@ def oneHotEncode(n):
 trainingData = np.array([np.zeros(128)])
 labels = np.array([np.zeros(128)])
 
-
 if __name__ == "__main__":
-	SEED = int(time.time())
-	random.seed(SEED)
-	print(f"Using {SEED} as seed")
-	for x in range(10):
-		data,l=generateTrainingData()
-		trainingData = np.concatenate((trainingData, [data]))
-		labels = np.concatenate((labels, l))
-	np.savetxt("trainingData.txt",trainingData,fmt='%.5e')
-	np.savetxt("labels.txt",labels,fmt='%.1e')
+    SEED = int(time.time())
+    random.seed(SEED)
+    print(f"Using {SEED} as seed")
+    print("How many samples to generate?")
+    i = int(input())
+    for x in range(i):
+        data,l=generateTrainingData()
+        trainingData = np.concatenate((trainingData, [data]))
+        labels = np.concatenate((labels,[l]))
+    np.savetxt("trainingData.txt",trainingData,fmt='%.5e')
+    np.savetxt("labels.txt",labels,fmt='%.1e')
