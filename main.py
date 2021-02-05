@@ -7,11 +7,24 @@ import codecs
 import json
 
 def generateToneFTT(midiNum):
-	librosa.midi_to_hz(midiNum)
+	hertz = librosa.midi_to_hz(midiNum)
 	sr = 22050
-	tone = librosa.tone(440, sr=22050, length=22050)
+	tone = librosa.tone(hertz, sr=22050, length=22050)
 	S = librosa.feature.melspectrogram(y=tone, sr=sr)
-	return zip(librosa.mel_frequencies(n_mels=len(S)),S[:,1].tolist())
+	return librosa.mel_frequencies(n_mels=len(S))
 
-b=list(generateToneFTT(69))
-json.dump(b, codecs.open("midi69.json", 'w', encoding='utf-8'), separators=(',', ':'), sort_keys=True, indent=4)
+def oneHotEncode(n):
+	ans = np.zeros(128)
+	ans[n] = 1
+	return ans 
+
+trainingData = np.array([np.zeros(128)])
+labels = np.array([np.zeros(128)])
+
+
+for x in range(50,90):
+	b=list(generateToneFTT(x))
+	trainingData = np.concatenate((trainingData, [b]))
+	labels = np.concatenate((labels, [oneHotEncode(x)]))
+np.savetxt("trainingData.txt",trainingData)
+np.savetxt("labels.txt",labels)
