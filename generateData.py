@@ -19,7 +19,7 @@ def generateTrainingData():
 	waveform = np.zeros(sample_rate) # a second of audio
 	label = np.zeros(128)
 	human_readable_label = []
-	notes = random.sample(range(1, 128), num_of_notes)
+	notes = random.sample(range(30, 120), num_of_notes)
 	for n in notes:
 		hertz = librosa.midi_to_hz(n)
 		waveform += librosa.tone(hertz, sr=sample_rate, length=sample_rate)
@@ -50,7 +50,7 @@ if __name__ == "__main__":
         trainingData = np.concatenate((trainingData, [data]))
         labels = np.concatenate((labels,[l]))
         if x % 100 == 0:
-          soundfile.write(f"{human}.wav", waveform, 22050, subtype='PCM_24')
+          #soundfile.write(f"{human}.wav", waveform, 22050, subtype='PCM_24')
           print(x)
     np.savetxt("trainingData.txt",trainingData,fmt='%.5e')
     np.savetxt("labels.txt",labels,fmt='%.1e')
