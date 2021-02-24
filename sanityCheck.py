@@ -4,12 +4,12 @@ import math
 import numpy as np
 from generateData import generateTrainingData
 
-model = keras.models.load_model('secondmodel')
+model = keras.models.load_model('fourthmodel')
 
 def unOneHotEncode(vec):
     ans = []
     for k,v in enumerate(vec):
-        if math.isclose(v,1):
+        if math.isclose(v,1,rel_tol=1e-3):
             ans.append(k)
     return ans
 
