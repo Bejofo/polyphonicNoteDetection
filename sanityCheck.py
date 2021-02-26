@@ -4,7 +4,7 @@ import math
 import numpy as np
 from generateData import generateTrainingData
 
-model = keras.models.load_model('fourthmodel')
+model = keras.models.load_model('secondmodel')
 
 def unOneHotEncode(vec):
     ans = []
