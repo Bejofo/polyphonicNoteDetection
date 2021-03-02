@@ -30,11 +30,17 @@ def generateExample():
     freqs = librosa.feature.melspectrogram(y=combinedWave, sr=sr)
     return freqs,label
 
+
+trainingData = np.array([])
+labels = np.array([])
 i = int(input("Examples to generate?"))
-for _ in range()
+for _ in range(i):
+    d,l = generateExample()
+    trainingData =np.concatenate((trainingData, [d]))
+    labels = np.concatenate((labels,[l]))
 
-pickleData = 
-
+np.savetxt("trainingData.txt",trainingData,fmt='%.5e')
+np.savetxt("labels.txt",labels,fmt='%.1e')
 
 
     
