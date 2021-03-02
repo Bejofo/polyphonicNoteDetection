@@ -16,7 +16,7 @@ model.add(Dense(128))
 model.add(Activation('sigmoid'))
 
 opt = keras.optimizers.Adam(lr=0.001)
-model.compile(loss='binary_crossentropy', optimizer=opt,metrics=['accuracy'])
+model.compile(loss='categorical_crossentropy', optimizer=opt,metrics=['accuracy'])
 model.fit(
     X,
     y,
