@@ -9,7 +9,7 @@ model = keras.models.load_model('secondmodel')
 def unOneHotEncode(vec):
     ans = []
     for k,v in enumerate(vec):
-        if math.isclose(v,1):
+        if math.isclose(v,1,rel_tol=1e-3):
             ans.append(k)
     return ans
 
