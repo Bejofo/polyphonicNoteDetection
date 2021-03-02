@@ -16,20 +16,20 @@ def unOneHotEncode(vec):
 def generateTrainingData():
 	num_of_notes = random.randint(1,3)
 	sample_rate = 22050
-	waveform = np.zeros(sample_rate) # a second of audio
+	waveform = np.zeros(sample_rate//8) # a second of audio
 	label = np.zeros(128)
 	human_readable_label = []
-	notes = random.sample(range(30, 120), num_of_notes)
+	notes = random.sample(range(0, 128), num_of_notes)
 	for n in notes:
 		hertz = librosa.midi_to_hz(n)
-		waveform += librosa.tone(hertz, sr=sample_rate, length=sample_rate)
+		waveform += librosa.tone(hertz, sr=sample_rate, length=sample_rate//8)
 		label += oneHotEncode(n)		
 		human_readable_label.append(librosa.midi_to_note(n))
 	# sprinkle in some noise
-	waveform += (np.random.rand(sample_rate)-0.5) * 0.01
+	waveform += (np.random.rand(sample_rate//8)-0.5) * 0.01
 	waveform/=num_of_notes # otherwise it clips
 	freqs = librosa.feature.melspectrogram(y=waveform, sr=sample_rate)
-	return freqs[:,1],label,human_readable_label,waveform
+	return freqs[:,1+random.randint(1,4)],label,human_readable_label,waveform
 
 def oneHotEncode(n):
 	ans = np.zeros(128)
