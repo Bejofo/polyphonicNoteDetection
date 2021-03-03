@@ -50,17 +50,20 @@ def generateExample(_):
                 n_bins=84 * 2, bins_per_octave=12*2)[:,random.randint(0,6)])
     return freqs,label
 
-trainingData = np.loadtxt("trainingData.txt")
-labels =  np.loadtxt("labels.txt")
-i = int(input("Examples to generate?"))
-pool = Pool()
-for d,l in pool.imap(generateExample,range(i)):
-    trainingData =np.concatenate((trainingData, [d]))
-    labels = np.concatenate((labels,[l]))
-pool.close()
-pool.join()
 
-np.savetxt("trainingData.txt",trainingData,fmt='%.5e')
-np.savetxt("labels.txt",labels,fmt='%i')
+
+if __name__ =="__main__":
+    trainingData = np.loadtxt("trainingData.txt")
+    labels =  np.loadtxt("labels.txt")
+    i = int(input("Examples to generate?"))
+    pool = Pool()
+    for d,l in pool.imap(generateExample,range(i)):
+        trainingData =np.concatenate((trainingData, [d]))
+        labels = np.concatenate((labels,[l]))
+    pool.close()
+    pool.join()
+
+    np.savetxt("trainingData.txt",trainingData,fmt='%.5e')
+    np.savetxt("labels.txt",labels,fmt='%i')
 
 

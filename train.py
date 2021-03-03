@@ -2,6 +2,7 @@ from keras.metrics import categorical_accuracy
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation
 from keras.layers.normalization import BatchNormalization
+from keras.layers import Conv1D
 
 from sklearn.model_selection import train_test_split
 import keras
@@ -20,7 +21,11 @@ model.add(Dense(256, input_dim=168))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 
-model.add(Dense(256))
+model.add(Dense(128))
+model.add(BatchNormalization())
+model.add(Activation('relu'))
+
+model.add(Dense(128))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 
@@ -29,13 +34,13 @@ model.add(BatchNormalization())
 model.add(Activation('sigmoid'))
 
 
-opt = keras.optimizers.Adam(lr=0.0001)
+opt = keras.optimizers.Adam(lr=0.0004)
 model.compile(loss='binary_crossentropy', optimizer=opt,metrics=['accuracy'])
 history = model.fit(
     X,
     y,
     batch_size=128,
-    epochs=300,
+    epochs=330,
     validation_data=(X_valid,y_valid)
     )
 model.save("model5")

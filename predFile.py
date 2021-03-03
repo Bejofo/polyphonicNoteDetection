@@ -22,7 +22,7 @@ def unOneHotEncode(vec):
 def to_human(notes):
     return list(map(librosa.core.midi_to_note,notes))
 
-waveform,sample_rate = librosa.load("mega.wav")
+waveform,sample_rate = librosa.load("emptyTown.wav")
 freqs = np.abs(librosa.cqt(
                 waveform, 
                 sr=sample_rate, 
@@ -36,7 +36,7 @@ track = mido.MidiTrack()
 mid.tracks.append(track)
 notesOn = []
 for p in predictions:
-    deltaT += 2
+    deltaT += 1
     predictedNotes = unOneHotEncode(p)
     print(to_human(predictedNotes))
     for note in predictedNotes:
@@ -49,7 +49,7 @@ for p in predictions:
             continue
         notesOn.remove(note)
         track.append(mido.Message('note_off', note=note, time=deltaT))
-mid.save('new_song4.mid')
+mid.save('emptyTown.mid')
 # f = open("transcription.txt",'w')
 # f.write(y)
 # f.close()
