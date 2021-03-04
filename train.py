@@ -1,17 +1,14 @@
-from keras.metrics import categorical_accuracy
+# from keras.metrics import categorical_accuracy
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation
 from keras.layers.normalization import BatchNormalization
-from keras.layers import Conv1D
-
 from sklearn.model_selection import train_test_split
 import keras
 import numpy as np 
 import datetime
-
-
-X = np.loadtxt("trainingData.txt")
-y = np.loadtxt("labels.txt")
+print("hi")
+X = np.load("trainingData.npy")
+y = np.load("labels.npy")
 
 X_train,X_valid,y_train,y_valid = train_test_split(X,y,test_size=0.2,random_state=1)
 
@@ -49,7 +46,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 # Data for plotting
 fig, ax = plt.subplots()
-ax.plot(history.history['val_loss'])
+ax.plot(history.history['val_accuracy'])
 ax.set(xlabel='epochs', ylabel='acc',
        title='Summary')
 #ax.set_ylim([0,1])

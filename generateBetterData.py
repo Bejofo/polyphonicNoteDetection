@@ -1,4 +1,5 @@
 from multiprocessing import Pool
+from SampleBank import SampleBank 
 import os
 import librosa
 import random
@@ -6,16 +7,8 @@ import numpy as np
 import cProfile
 import functools
 
-sample_bank = {}
 filenames = os.listdir("samples")
-def load_into_bank(f):
-    return f,librosa.load(f"samples/{f}",duration=1.5)[0]
-pool = Pool()
-for f,data in pool.imap(load_into_bank,filenames):
-    sample_bank[f] = data
-    print(f)
-pool.close()
-pool.join()
+sounds = SampleBank()
 
 @functools.lru_cache(maxsize=None)
 def oneHotEncode(n):
@@ -41,29 +34,33 @@ def generateExample(_):
     label = sum(label)
     if max(label) == 2:
         return generateExample(None)
-    combinedWave = sum(sample_bank[filename] for filename in filesToUse)
-    combinedWave/= len(filesToUse)
-    freqs = np.abs(librosa.cqt(
-                combinedWave, 
-                sr=sr, 
-                fmin=librosa.note_to_hz('C1'),
-                n_bins=84 * 2, bins_per_octave=12*2)[:,random.randint(0,6)])
+    freqs = abs(sum(sounds.cqt[filename][:,1] for filename in filesToUse))
     return freqs,label
 
 
-
 if __name__ =="__main__":
-    trainingData = np.loadtxt("trainingData.txt")
-    labels =  np.loadtxt("labels.txt")
+    trainingData = None
+    labels =  None
+    try:
+        trainingData = np.load("trainingData.npy")
+        labels =  np.load("labels.npy")
+    except:
+        pass
     i = int(input("Examples to generate?"))
     pool = Pool()
     for d,l in pool.imap(generateExample,range(i)):
-        trainingData =np.concatenate((trainingData, [d]))
-        labels = np.concatenate((labels,[l]))
+        if (trainingData) is None or (labels is None):
+            trainingData = [d]
+            labels = [l]
+        else:
+            trainingData =np.stack((trainingData, d))
+            labels = np.stack((labels,l))
+        i-=1
+        if i%100==0:
+            print(i)
     pool.close()
     pool.join()
-
-    np.savetxt("trainingData.txt",trainingData,fmt='%.5e')
-    np.savetxt("labels.txt",labels,fmt='%i')
+    np.save("trainingData.npy",trainingData)
+    np.save("labels.npy",labels)
 
 
