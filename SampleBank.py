@@ -19,7 +19,7 @@ class SampleBank:
             self.cqt[f] = librosa.cqt(
                 data, 
                 fmin=librosa.note_to_hz('C1'),
-                n_bins=84 * 2, bins_per_octave=12*2)
+                n_bins=84 * 5, bins_per_octave=12*5)
             print(f)
         pool.close()
         pool.join()
@@ -42,4 +42,4 @@ class SampleBank:
 
 
 def load_into_bank(f):
-    return f,librosa.load(f"samples/{f}",duration=1.5)[0]
+    return f,librosa.load(f"samples/{f}",duration=3)[0]
