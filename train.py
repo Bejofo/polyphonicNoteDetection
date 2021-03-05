@@ -14,41 +14,35 @@ X_train,X_valid,y_train,y_valid = train_test_split(X,y,test_size=0.2,random_stat
 
 model = Sequential()
 
-model.add(Dense(256, input_dim=168))
+model.add(Dense(512, input_dim=84*5))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 
-model.add(Dense(128))
+model.add(Dense(256))
 model.add(BatchNormalization())
-model.add(Activation('relu'))
+model.add(Activation('sigmoid'))
+
 
 model.add(Dense(128))
 model.add(BatchNormalization())
-model.add(Activation('relu'))
+model.add(Activation('sigmoid'))
 
 model.add(Dense(128))
 model.add(BatchNormalization())
 model.add(Activation('sigmoid'))
 
 
-opt = keras.optimizers.Adam(lr=0.0004)
+opt = keras.optimizers.Adam(lr=0.0008)
 model.compile(loss='binary_crossentropy', optimizer=opt,metrics=['accuracy'])
+print(model.summary())
+callback = keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=3,verbose=1)
 history = model.fit(
     X,
     y,
-    batch_size=128,
-    epochs=330,
-    validation_data=(X_valid,y_valid)
+    batch_size=1024,
+    epochs=100,
+    validation_data=(X_valid,y_valid),
+    callbacks=[callback]
     )
 model.save("model5")
 
-import matplotlib
-import matplotlib.pyplot as plt
-# Data for plotting
-fig, ax = plt.subplots()
-ax.plot(history.history['val_accuracy'])
-ax.set(xlabel='epochs', ylabel='acc',
-       title='Summary')
-#ax.set_ylim([0,1])
-ax.grid()
-plt.show()
