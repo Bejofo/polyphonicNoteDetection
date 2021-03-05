@@ -23,11 +23,12 @@ def to_human(notes):
     return list(map(librosa.core.midi_to_note,notes))
 
 waveform,sample_rate = librosa.load("emptyTown.wav")
+waveform =  librosa.effects.harmonic(waveform)
 freqs = np.abs(librosa.cqt(
                 waveform, 
                 sr=sample_rate, 
                 fmin=librosa.note_to_hz('C1'),
-                n_bins=84 * 2, bins_per_octave=12*2))
+                n_bins=84 * 5, bins_per_octave=12*5))
 y = ""
 predictions = model.predict(np.array(freqs).transpose())
 deltaT = 0 
@@ -38,7 +39,7 @@ notesOn = []
 for p in predictions:
     deltaT += 1
     predictedNotes = unOneHotEncode(p)
-    print(to_human(predictedNotes))
+    # print(to_human(predictedNotes))
     for note in predictedNotes:
         if note in notesOn:
             continue
